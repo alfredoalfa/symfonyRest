@@ -61,6 +61,12 @@ released under the MIT or BSD license.
 sudo setfacl -dR -m u:www-data:rwx -m u:alfredocontreras:rwx var/cache var/logs
 sudo setfacl -R -m u:www-data:rwX -m u:alfredocontreras:rwX var/cache var/logs
 
+* **PHP version**
+PHP 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 (cli) (built: May 31 2019 11:43:40) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies
+    with Zend OPcache v7.1.30-1+ubuntu18.04.1+deb.sury.org+1, Copyright (c) 1999-2018, by Zend Technologies
+
 Enjoy!
 
 [1]:  https://symfony.com/doc/3.2/setup.html
