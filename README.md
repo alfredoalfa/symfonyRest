@@ -56,6 +56,11 @@ It comes pre-configured with the following bundles:
 All libraries and bundles included in the Symfony Standard Edition are
 released under the MIT or BSD license.
 
+* **Symfony cache:clear command changes folder owner**
+
+sudo setfacl -dR -m u:www-data:rwx -m u:alfredocontreras:rwx var/cache var/logs
+sudo setfacl -R -m u:www-data:rwX -m u:alfredocontreras:rwX var/cache var/logs
+
 Enjoy!
 
 [1]:  https://symfony.com/doc/3.2/setup.html
