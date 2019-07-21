@@ -22,7 +22,7 @@ class Helpers
         $normalizers = [new GetSetMethodNormalizer()]; //normaliza la informacion que llega
         $encoders = ["json" => new JsonEncode()]; //codificar json
 
-        $serializer = new Serializer($normalizers, $encoders); // combierte los datos correctamente.
+        $serializer = new Serializer($normalizers, $encoders); // convierte los datos correctamente.
         $json = $serializer->serialize($data, 'json'); //se pasan los datos $data para que los convierta a json
         
         $response = new Response();

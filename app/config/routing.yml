@@ -1,11 +1,17 @@
 app:
-    resource: '@AppBundle/Resources/config/routing/default.yml'
+    resource: '@AppBundle/Resources/config/routing.yml'
     prefix: /
 
-app_user:
-    resource: '@AppBundle/Resources/config/routing/user.yml'
-    prefix: /user
+# app_user:
+#     resource: '@AppBundle/Resources/config/routing/user.yml'
+#     prefix: /user
+
+# app_task:
+#     resource: '@AppBundle/Resources/config/routing/task.yml'
+#     prefix: /task
 
 backend:
     resource: "@BackendBundle/Resources/config/routing.yml"
     prefix:   /backend
+
+    

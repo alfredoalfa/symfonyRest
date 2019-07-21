@@ -17,35 +17,35 @@ class JwtAuth
     }
     
     public function signup($email, $password, $getHash = null)
-    {
+    { 
         //$this->getDoctrine()->getManager();
         //$repository = $this->getDoctrine()->getRepository(Product::class);
         //$user = $this->getDoctrine()->getManager();
         $user = $this->manager->getRepository(Users::class);
-        $user = $user->findAll();
-        // $user = $user->findOneBy(array(
-        //     "email" => $email,
-        //     "password" => $password
-        // ));
-        // var_dump($user[0]->getName());
-        // dump($user);
-        // die();
+        //$user = $user->findAll();
+        $user = $user->findOneBy(array(
+            "email" => $email,
+            "password" => $password
+        ));
+
+        //var_dump($user[0]->getName());
         $signup = false;
-        if (is_object($user)) {
+        if (is_object($user)){
             $signup = true;
         }
 
-        if ($signup = true) {
+        if ($signup == true) {
             //GENERAR TOKEN JWT
 
             $token = array(
-                "email"   => $user[0]->getEmail(),
-                "name"    => $user[0]->getName(),
-                "surname" => $user[0]->getSurname(),
+                "id"      => $user->getId(), 
+                "email"   => $user->getEmail(),
+                "name"    => $user->getName(),
+                "surname" => $user->getSurname(),
                 "iat"     => time(),
                 "exp"     => time() + (7 * 24 * 60 * 60)
             );
-            
+
             $jwt = JWT::encode($token, $this->key, 'HS256');
             $decoded = JWT::decode($jwt, $this->key, array('HS256'));
 

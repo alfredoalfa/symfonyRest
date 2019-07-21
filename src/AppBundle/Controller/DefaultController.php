@@ -23,12 +23,13 @@ class DefaultController extends Controller
     }
 
     public function loginAction(Request $request)
-    {
-        $helpers = $this->get(Helpers::class);
-         
-        //Recibir json POST
-        $json = $request->get('json', null );
-
+    {        
+         $helpers = $this->get(Helpers::class);
+        // var_dump($helpers);
+        
+     //Recibir json POST
+        $json = $request->get('json', null);
+        
         //Array a devolver por defecto
         $data = array(
             'status' => 'error',
@@ -53,15 +54,20 @@ class DefaultController extends Controller
             if ($email != null && count($validate_email) == 0 && $password != null ){
 
                 $jwt_auth = $this->get(JwtAuth::class);
-
+                dump($email,$password, $getHash);
+               
                 if ($getHash == null || $getHash == false) {
-                    $signup = $jwt_auth->signup($email, $password);    
+                    $pwd = hash('sha256', $password);
+                    $signup = $jwt_auth->signup($email, $pwd);   
+
                 } else {
-                    $signup = $jwt_auth->signup($email, $password, True);
+                    $pwd = hash('sha256', $password);
+                    $signup = $jwt_auth->signup($email, $pwd, True);
+
                 }
         // var_dump($signup);
         // dump($signup);
-        // die();
+       // die();
              return $this->json($signup);
             
             }else{
