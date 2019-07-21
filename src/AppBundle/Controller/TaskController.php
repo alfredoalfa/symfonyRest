@@ -14,7 +14,7 @@ class TaskController extends Controller
 
     public function newAction(Request $request)
     {
-        echo "hola";
+        echo "hola mundo";
         die();
         return $this->render('index.html.twig');
     }
