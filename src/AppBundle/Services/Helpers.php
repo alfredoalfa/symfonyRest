@@ -18,8 +18,8 @@ class Helpers
     
     public function json($data)
     {
-        Echo "LLEGO";
-        $normalizers = [new GetSetMethodNormalizer()]; //normaliza la informacion que llega
+        //Echo "LLEGO";
+        $normalizers = [new GetSetMethodNormalizer()]; //normalizar
         $encoders = ["json" => new JsonEncode()]; //codificar json
 
         $serializer = new Serializer($normalizers, $encoders); // convierte los datos correctamente.
