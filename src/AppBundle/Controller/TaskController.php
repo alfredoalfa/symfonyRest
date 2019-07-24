@@ -210,6 +210,136 @@ class TaskController extends Controller
 			}
 		return $helpers->json($data);
 
-	}
+    }
     
+    public function searchAction(Request $request, $search = null)
+    {   
+        $helpers = $this->get(Helpers::class); //llama al servicio para transformar objetos json.
+        $jwt_auth = $this->get(JwtAuth::class);
+
+        $token = $request->get('autorization', null);
+		$authCheck = $jwt_auth->checkToken($token);
+		// dump($token);
+		// die();
+		if ($authCheck) {
+            $identity =  $jwt_auth->checkToken($token, true);
+
+            $em = $this->getDoctrine()->getManager();
+            
+            //Filtro
+            $filter = $request->get('filter', null);    
+            if (empty($filter)) {
+                $filter = null;
+            } elseif ($filter == 1) {
+                    $filter = 'new';
+            } elseif ($filter == 2) {
+                $filter = 'todo';
+            } else {
+                $filter = 'finished';
+            }
+
+            //Order
+            $order = $request->get('order', null);    
+            if (empty($order) || $order == 2) {
+                $order = 'DESC';
+            } else {
+                $order = 'ASC';
+            }
+
+            //Busqueda
+            if ($search != null) {
+                $dql = "SELECT t FROM BackendBundle:Tasks t "
+                        ."WHERE t.user = $identity->id AND "
+                        ."(t.title LIKE :search OR t.description LIKE :search) ";
+            
+            } else {
+                $dql = "SELECT t FROM BackendBundle:Tasks t "
+                        ."WHERE t.user = $identity->id";
+            }
+            //Set filter
+            if ($filter != null) {
+                $dql .= " AND t.status = :filter"; 
+            }
+
+            //Set order
+            $dql .= " ORDER BY t.id $order";
+
+            //Create Query
+            $query = $em->createQuery($dql);
+
+                    //Set parameter filter
+
+                    if ($filter != null) {
+                        $query->setParameter('filter',"$filter");
+                    }
+                    //Set parameter search
+
+                    if (!empty($search)) {
+                        $query->setParameter('search',"%$search%");
+                    }
+            
+            //dump($query->getSQL());die;
+            $task = $query->getResult();
+
+            $data = array(
+                "status" => "Success",
+                "code" => 200,
+                "data" => $task
+            );
+            
+        // $query = $this->getEntityManager()->createQuery($dql);
+        // var_dump($query->getSQL());die;
+        }else{
+            $data = array(
+                "status" => "Error",
+                "code" => 401,
+                "msg" => "Autorization no valid"
+            );
+        }
+
+        return $helpers->json($data);
+    }
+    
+    public function removeAction(Request $request, $id = null)
+    {
+		$helpers = $this->get(Helpers::class); //llama al servicio para transformar objetos json.
+        $jwt_auth = $this->get(JwtAuth::class);
+
+        $token = $request->get('autorization', null);
+		$authCheck = $jwt_auth->checkToken($token);
+
+			if ($authCheck) {
+				$identity =  $jwt_auth->checkToken($token, true);
+				
+				$em = $this->getDoctrine()->getManager();
+
+				$task = $em->getRepository('BackendBundle:Tasks')->find($id);
+
+					if ($task && is_object($task) && $identity->id == $task->getUser()->getId()) {
+                        
+                        $em->remove($task);
+                        $em->flush();
+                        
+						$data = array(
+							"status" => "Success",
+							"code" => 200,
+							"data" => $task
+						);
+					}else {
+						$data = array(
+							"status" => "Error",
+							"code" => 404,
+							"msg" => "Task not found"
+						);
+					}
+
+			}else{
+				$data = array(
+					"status" => "Error",
+					"code" => 401,
+					"msg" => "Autorization no valid"
+				);
+			}
+		return $helpers->json($data);
+    }
 }
