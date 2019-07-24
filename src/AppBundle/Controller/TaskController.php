@@ -137,7 +137,7 @@ class TaskController extends Controller
 
 			$em = $this->getDoctrine()->getManager();
 			
-			$dql = "SELECT t FROM BackendBundle:Tasks t ORDER BY t.id DESC";
+			$dql = "SELECT t FROM BackendBundle:Tasks t WHERE t.user = ($identity->id) ORDER BY t.id DESC";
 
 			$query = $em->CreateQuery($dql);
 			
