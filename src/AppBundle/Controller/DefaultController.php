@@ -44,8 +44,9 @@ class DefaultController extends Controller
 
             $email = (isset($params->email)) ? $params->email : null;
             $password = (isset($params->password)) ? $params->password : null;
-            $gethash = (isset($params->gethash)) ? $params->gethash : null;
-
+            $getHash = (isset($params->getHash)) ? $params->getHash : null;
+            dump($getHash);
+            die();
             $emailConstraint = new Assert\Email([
                 'message'=>'This is not the corect email format'
             ]);
@@ -55,7 +56,7 @@ class DefaultController extends Controller
 
                 $jwt_auth = $this->get(JwtAuth::class);
 
-                if ($gethash == null || $gethash == false) {
+                if ($getHash == null || $getHash == false) {
                     $pwd = hash('sha256', $password);
                     $signup = $jwt_auth->signup($email, $pwd);   
 
