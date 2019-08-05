@@ -35,7 +35,7 @@ class DefaultController extends Controller
             'status' => 'error',
             'data' => 'Send json via post!'
         );
-
+        // dump($json);
         if ($json != null) {
             // me haces login
 
@@ -50,7 +50,8 @@ class DefaultController extends Controller
                 'message'=>'This is not the corect email format'
             ]);
             $validate_email= $this->get('validator')->validate($email, $emailConstraint);
-
+// dump($getHash);
+// die();
             if ($email != null && count($validate_email) == 0 && $password != null ){
 
                 $jwt_auth = $this->get(JwtAuth::class);

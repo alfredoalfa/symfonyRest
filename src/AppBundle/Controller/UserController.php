@@ -58,8 +58,8 @@ class UserController extends Controller
                 $isset_user = $em->getRepository('BackendBundle:Users')->findBy(array(
                     'email' => $email 
                 ));
-                //dump($isset_user);
-                //die();
+                // dump($isset_user);
+                // die();
                 if (count($isset_user) == 0) {
                     $em->persist($user);
                     $em->flush();
