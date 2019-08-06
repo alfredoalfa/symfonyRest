@@ -130,26 +130,23 @@ class TaskController extends Controller
 
         $token = $request->get('autorization', null);
 		$authCheck = $jwt_auth->checkToken($token);
-		// dump($token);
-		// die();
+
 		if ($authCheck) {
             $identity =  $jwt_auth->checkToken($token, true);
 
 			$em = $this->getDoctrine()->getManager();
 			
-			$dql = "SELECT t FROM BackendBundle:Tasks t WHERE t.user = ($identity->id) ORDER BY t.id DESC";
+			$dql = "SELECT t FROM BackendBundle:Tasks t WHERE t.user = 1 ORDER BY t.id DESC";
 
 			$query = $em->CreateQuery($dql);
-			
-
-			$page = $request->query->getInt('page', 1);
+   
+			$page = $request->query->getInt('page',1);
 			$paginator = $this->get('knp_paginator');
 			$items_per_page = 10;
 
 			$pagination = $paginator->paginate($query, $page, $items_per_page);
-			$total_items_count = $pagination->getTotalItemCount();
-
-
+            $total_items_count = $pagination->getTotalItemCount();
+            
 			$data = array(
                 "status" => "Success",
                 "code" => 200,
