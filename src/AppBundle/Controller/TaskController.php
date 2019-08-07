@@ -136,7 +136,7 @@ class TaskController extends Controller
 
 			$em = $this->getDoctrine()->getManager();
 			
-			$dql = "SELECT t FROM BackendBundle:Tasks t WHERE t.user = 1 ORDER BY t.id DESC";
+			$dql = "SELECT t FROM BackendBundle:Tasks t WHERE t.user = $identity->id ORDER BY t.id DESC";
 
 			$query = $em->CreateQuery($dql);
    
@@ -146,7 +146,8 @@ class TaskController extends Controller
 
 			$pagination = $paginator->paginate($query, $page, $items_per_page);
             $total_items_count = $pagination->getTotalItemCount();
-            
+            // dump($pagination);
+            // die();
 			$data = array(
                 "status" => "Success",
                 "code" => 200,
